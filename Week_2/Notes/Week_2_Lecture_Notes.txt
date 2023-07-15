@@ -1,0 +1,37 @@
+Good practice to keep comments at the TOP of a code block.
+
+Don't comment after each line in the code block.  Summarize what you're doing at the top of the code block. 
+
+Can use the double quotes to do a comment block
+
+Naming convention is snake_case (all lowercase)
+	use the object type as a suffix.
+
+	"cars_df" would be a car data frame
+
+	Don't put spaces in file names! things will break!
+
+The .Rmd file has a play button for each segment to test output
+
+R is a 1-based indexing language, not 0
+
+=========================
+Vector is an array of like-type variables
+
+Can create a vector specifying certain elements by doing c(1,5,10) and that returns the 3 chosen elements.  This is good for SLICING an existing vector
+
+To remove an element from a vector, call the index with a negative sign like fib_vec[-1]
+
+convert date using as.Date
+
+print the structure first to see how the date structure is.  
+
+format=%m%d%Y
+
+mm/dd/yyyy
+
+
+Question 7 may need aggregate function?
+
+
+t <- table(factor(sales$table))

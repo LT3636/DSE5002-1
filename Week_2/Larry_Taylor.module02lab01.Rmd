@@ -1,7 +1,7 @@
 ---
 title: "Week 2 Exercises"
-author: "Your Name Here"
-date: "May 14, 2022"
+author: "Larry Taylor"
+date: "July 15, 2023"
 output: pdf_document
 ---
 
@@ -17,10 +17,10 @@ Read the sales_pipe.txt file into an R data frame as sales.
 
 ```{r}
 # Your code here
-sales <- read.delim("Week_2/Data/sales_pipe.txt"
-                     ,stringsAsFactors=FALSE
-                     ,sep = "|"
- )
+sales <- read.delim("data/sales_pipe.txt"
+                    ,stringsAsFactors = FALSE
+                    ,sep = "|"
+                    )
 ```
 
 # Exercise 2
@@ -30,6 +30,8 @@ You can extract a vector of columns names from a data frame using the colnames()
 
 ```{r}
 # Your code here
+colnames(sales)[1] <- "Row.ID"
+
 
 ```
 
@@ -41,7 +43,29 @@ How many weeks?
 **Note: Use lubridate**
 
 ```{r}
-# Your code here
+library(lubridate)
+
+sales$Order.Date <- as.Date(sales$Order.Date,
+                            format='%m/%d/%Y'
+                            )
+
+
+sales$Ship.Date <- mdy(sales$Ship.Date)
+
+
+
+num_of_days <- max(sales$Order.Date) - min(sales$Order.Date)
+
+num_of_weeks <- days(num_of_days)/weeks(1)
+
+num_of_years <- days(num_of_days)/years(1)
+
+print(num_of_days)
+print(num_of_weeks)
+print(num_of_years)
+
+
+
 
 ```
 
@@ -50,7 +74,10 @@ How many weeks?
 What is the average number of days it takes to ship an order?
 
 ```{r}
-# Your code here
+
+sales$days_to_ship_order <- difftime(sales$Ship.Date, sales$Order.Date, units='days')
+
+mean(sales$days_to_ship_order)
 
 ```
 
@@ -60,7 +87,13 @@ How many customers have the first name Bill?
 You will need to split the customer name into first and last name segments and then use a regular expression to match the first name bill. Use the length() function to determine the number of customers with the first name Bill in the sales data. 
 
 ```{r}
-# Your code here
+library(stringr)
+
+
+sales$first_name <- str_split_fixed(string=sales$Customer.Name, pattern=" ", n=2)
+
+length(which(sales$first_name=="Bill"))
+
 
 ```
 
@@ -69,7 +102,9 @@ How many mentions of the word 'table' are there in the Product.Name column?
 **Note you can do this in one line of code**
 
 ```{r}
-# Your code here
+library(stringr)
+
+length(str_which(sales$Product.Name, "table", negate=FALSE))
 
 ```
 
@@ -78,6 +113,13 @@ Create a table of counts for each state in the sales data. The counts table shou
 
 ```{r}
 # Your code here
+library(forcats)
+
+
+
+fct_count(sales$State, sort=FALSE,prop=FALSE)
+
+
 
 ```
 
@@ -86,6 +128,9 @@ Create an alphabetically ordered barplot for each sales Category in the State of
 
 ```{r}
 # Your code here
+texas_only <- sales[sales$State=="Texas",]
+
+barplot(table(factor(texas_only$Category)))
 
 ```
 
@@ -95,7 +140,7 @@ Find the average profit by region.
 
 ```{r}
 # Your code here
-
+aggregate(sales$Profit, list(Region = sales$Region), mean)
 ```
 
 # Exercise 10
@@ -104,6 +149,6 @@ Find the average profit by order year.
 
 ```{r}
 # Your code here
-
+aggregate(sales$Profit, list(Region = year(sales$Order.Date)), mean)
 ```
 
