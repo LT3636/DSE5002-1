@@ -1,7 +1,7 @@
 ---
 title: "Week 3 Exercises"
-author: "Your Name Here"
-date: "May 19, 2022"
+author: "Larry Taylor"
+date: "July 23, 2023"
 output: pdf_document
 ---
 
@@ -44,10 +44,27 @@ Only one valid answer exists.
 *Use the function seq_along to iterate*
 
 ```{r}
+vec1 <- character()
+loop_work <- 0
+
+
+
 two_sum <- function(nums_vector,target){
-  #your code here
+  for(i in (seq_along(nums_vector))){
+    for(x in (seq_along(nums_vector))){
+      if((nums_vector[i] + nums_vector[x]) == target){
+        loop_work <- loop_work + 1
+        vec1 <- c(vec1, paste(i, x, sep = " "))
+     
+      }
+    }
+    
+  }
   
+print(vec1)
 }
+
+
 
 
 # Test code
@@ -70,10 +87,32 @@ Loop the array once to make a hash map of the value to its index. Then loop agai
 *A simple implementation uses two iterations. In the first iteration, we add each element's value as a key and its index as a value to the hash table. Then, in the second iteration, we check if each element's complement (target – nums_vector[i]) exists in the hash table. If it does exist, we return current element's index and its complement's index. Beware that the complement must not be nums_vector[i] itself!*
 
 ```{r}
+library(hash)
+
 two_sum <- function(nums_vector,target){
-  #your code here
+  h <- hash()
+  vec2 <- c()
+  hash_work <- 0
+  
+  for(i in (seq_along(nums_vector))){
+    hash_work <- hash_work + 1
+    h[i] <- nums_vector
+  }
+  
+  
+  
+  for(m in (seq_along(h))){
+     if( as.character((target - nums_vector[m])) %in% h[[as.character(m)]]){
+       hash_work <- hash_work + 1
+       vec2 <- c(vec2,paste((target - nums_vector[m]),nums_vector[m], sep=' '))
+     }
+   
+  }
+  
+  print(vec2)
   
 }
+
 
 
 # Test code
@@ -81,6 +120,8 @@ nums_vector <- c(5,7,12,34,6,10,8,9)
 target <- 15
  
 two_sum(nums_vector,target)
+
+
 #expected answers
 #[1] 10  5
 #[1] 8 7
@@ -88,6 +129,7 @@ two_sum(nums_vector,target)
 #[1]  5 10
 #[1] 7 8
 #[1] 6 9
+
 
 
 
